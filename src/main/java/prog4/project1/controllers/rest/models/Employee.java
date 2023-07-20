@@ -1,18 +1,18 @@
-package prog4.project1.models;
+package prog4.project1.controllers.rest.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class Employee {
-    private String first_name;
-    private String last_name;
+
+    private String fullName;
     private LocalDate birthday;
+    private String matricule;
+
 }

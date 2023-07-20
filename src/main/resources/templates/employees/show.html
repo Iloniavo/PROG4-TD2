@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/878e958776.js" crossorigin="anonymous"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#092147',
+                        secondary: '#1A488E',
+                        tertiary: '#97B2DE'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body th:object="${employee}" >
+<img th:src="'data:image/jpeg;base64,' + ${employee.picUrl}" alt="Aucune image" class="rounded-full h-20 w-20 mx-auto mt-4">
+ <form th:action="@{/employees/{id}((id=${employee.id}))}" th:object="${employee}" th:method="put" enctype="multipart/form-data">
+    <div class="mb-6">
+        <label for="firstname" class="block text-gray-700 text-sm font-bold mb-2">First Name :</label>
+        <input th:field="*{firstName}" type="text" id="firstname" name="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" required>
+    </div>
+    <div class="mb-6">
+        <label for="lastname" class="block text-gray-700 text-sm font-bold mb-2">Last Name :</label>
+        <input th:field="*{lastName}" type="text" id="lastname" name="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" required>
+    </div>
+    <div class="mb-6">
+        <label for="matricule" class="block text-gray-700 text-sm font-bold mb-2">Matricule :</label>
+        <input th:field="*{serialNumber}" type="text" id="matricule" name="matricule" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" required>
+    </div>
+    <div class="mb-6">
+        <label for="birthday" class="block text-gray-700 text-sm font-bold mb-2">Birthday :</label>
+        <input th:field="*{birthday}" type="date" id="birthday" name="birthday" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" required>
+    </div>
+    <div class="mb-6">
+        <label for="photo" class="block text-gray-700 text-sm font-bold mb-2">Picture :</label>
+        <input type="file" id="photo" name="photo" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" required>
+    </div>
+    <div class="flex justify-end">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Update <i class="fa-solid fa-plus"></i></button>
+    </div>
+</form>
+</body>
+</html>

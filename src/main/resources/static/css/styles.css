@@ -3,3 +3,40 @@ body {
     background-color: whitesmoke;
 
 }
+.navbar {
+    background-color: #1a202c;
+}
+
+.navbar a {
+    color: #fff;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.navbar .active {
+    font-weight: bold;
+}
+
+.navbar .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    background-color: #1a202c;
+    min-width: 10rem;
+    padding: 0.5rem;
+    z-index: 10;
+    position: absolute;
+    right: 0;
+}
+
+.dropdown-menu a {
+    color: #fff;
+}
+
+.dropdown-menu a:hover {
+    background-color: #718096;
+}
