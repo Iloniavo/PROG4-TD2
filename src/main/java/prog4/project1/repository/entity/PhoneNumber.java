@@ -11,17 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
+@Data
+@Table(name = "phone_number")
 public class PhoneNumber {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true)
     private String number;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "owner_id")
     private Employee owner;
 
 }

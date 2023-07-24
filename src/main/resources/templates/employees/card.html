@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Card</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/878e958776.js" crossorigin="anonymous"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#092147',
+            secondary: '#1A488E',
+            tertiary: '#97B2DE'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+<div>
+  <div class="bg-white w-4/5 shadow mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Employee Details</h1>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4" >
+      <!-- Première partie -->
+      <div class="bg-gray-200 p-4">
+        <img th:src="'data:image/jpeg;base64,' + ${employee.picUrl}" alt="Employee Photo" class="w-20 h-20 mx-auto rounded-full mb-2" >
+        <h3 class="text-lg font-bold mb-2">Personal Information</h3>
+        <p><strong>First Name:</strong> <span th:text="${employee.firstName}">N/A</span></p>
+        <p><strong>Last Name:</strong> <span th:text="${employee.lastName}">N/A</span></p>
+        <p><strong>Birthday:</strong> <span th:text="${employee.birthday}">N/A</span></p>
+        <p><strong>Sex:</strong> <span th:text="${employee.sex}">N/A</span></p>
+        <p><strong>Phone Numbers:</strong>
+          <span th:each="phoneNumber : ${employee.phoneNumbers}" th:text="${phoneNumber.number + ', '}">N/A</span>
+        </p>
+        <p><strong>PS Email:</strong> <span th:text="${employee.psEmail}">N/A</span></p>
+        <!-- Ajoutez l'image ici avec la balise <img> -->
+      </div>
+
+      <!-- Deuxième partie -->
+      <div class="bg-gray-100 p-4">
+        <h3 class="text-lg font-bold mb-2">Employment Information</h3>
+        <p><strong>Hire Date:</strong> <span th:text="${employee.hireDate}">N/A</span></p>
+        <p><strong>Serial Number:</strong> <span th:text="${employee.serialNumber}">N/A</span></p>
+        <p><strong>CNAPS Serial Number:</strong> <span th:text="${employee.cnapsSerialNumber}">N/A</span></p>
+        <p><strong>Function:</strong> <span th:text="${employee.function}">N/A</span></p>
+        <p><strong>Pro Email:</strong> <span th:text="${employee.proEmail}">N/A</span></p>
+        <p><strong>Hire date:</strong> <span th:text="${employee.hireDate}">N/A</span></p>
+        <p><strong>Resignation date:</strong> <span th:text="${employee.resignationDate}">N/A</span></p>
+
+      </div>
+
+      <!-- Troisième partie -->
+      <div class="bg-gray-200 p-4">
+        <h3 class="text-lg font-bold mb-2">Identity Card Information</h3>
+        <p><strong>Identity Card ID:</strong> <span th:text="${employee.identityCardId}">N/A</span></p>
+        <p><strong>Identity Card Delivery Place:</strong> <span th:text="${employee.identityCardDelPlace}">N/A</span></p>
+        <p><strong>Identity Card Delivery Date:</strong> <span th:text="${employee.identityCardDelDate}">N/A</span></p>
+        <p><strong>Dependent Children:</strong> <span th:text="${employee.dependentChildren}">N/A</span></p>
+      </div>
+    </div>
+    <a th:href="@{/employees/{id}/update(id=${employee.id})}" class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+      Update
+    </a>
+  </div>
+  <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 absolute bottom-10 right-10"><a href="/employees/">Return to list
+    <i class="fa-solid fa-arrow-right"></i></a></button>
+
+</div>
+</body>
+</html>
+</html>

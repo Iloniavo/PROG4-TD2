@@ -6,26 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class IdentityCard {
+@Data
+@Table(name = "\"user\"")
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDate deliveryDay;
+    @Column(unique = true)
+    private String email;
 
-    private String deliveryPlace;
+    private String password;
 
     @Column(unique = true)
-    private String number;
-
-    @ManyToOne
-    private Employee owner;
-
+    private String username;
 }

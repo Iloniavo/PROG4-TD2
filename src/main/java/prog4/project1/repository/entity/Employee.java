@@ -2,10 +2,7 @@ package prog4.project1.repository.entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,53 +14,53 @@ import static prog4.project1.utils.Converter.generateRandomNumber;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id; // automatically generated
 
     private String firstName;
 
     @Column(unique = true)
-    private String serialNumber;
+    private String serialNumber; // automatically generated
 
     private String lastName;
 
     private LocalDate birthday;
 
-    @Enumerated(EnumType.STRING)
-    private Sex sex;
+    private String sex;
 
     @Column(columnDefinition = "text")
     @Nullable
     private String picUrl;
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     private List<PhoneNumber> phoneNumbers;
 
-    private LocalDate hireDate = LocalDate.now();
+    private LocalDate hireDate = LocalDate.now();// automatically generated
 
-    private LocalDate resignationDate;
+    private LocalDate resignationDate;// null by default
 
-    @Enumerated(EnumType.STRING)
-    private SocioProfessionalCategory socialCategory;
+    private String socialCategory;
 
     private Integer dependentChildren;
+
+    private String location;
 
     private String cnapsSerialNumber;
 
     private String function;
 
-    private String pro_email;
+    private String proEmail;
 
-    private String ps_email;
-    public enum Sex {
-        H, F
-    }
+    private String psEmail;
 
-    public enum SocioProfessionalCategory {
-        M1, M2, OS1, OS2, OS3, OP1
-    }
+    private String identityCardDelPlace;
+
+    private String identityCardId;
+
+    private LocalDate identityCardDelDate;
 
     @PrePersist
     private void generateSerialNumber() {

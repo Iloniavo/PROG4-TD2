@@ -3,8 +3,7 @@ package prog4.project1.utils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Random;
+import java.util.*;
 
 public class Converter {
     public static String convertToBase64 (MultipartFile file) throws IOException {
@@ -29,5 +28,15 @@ public class Converter {
         }
         return stringBuilder.toString();
     }
+
+    public static List<String> transformMultiplePhoneNumbers(String input){
+        List<String> elementsList = new ArrayList<>();
+
+        String[] elementsArray = input.split(",\\s*");
+        Collections.addAll(elementsList, elementsArray);
+
+        return elementsList;
+    }
+
 
 }
