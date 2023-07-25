@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.Objects;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -44,9 +46,10 @@ public class UserController {
     public String loginAttempt(@ModelAttribute("user") User user, HttpSession session, HttpServletResponse response){
         User userToCheck = userService.getByEmailAndPassword(user.getEmail(), user.getPassword());
         Session currentSession = Session.builder()
-                .user(user)
-                .expirationDateTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                .user(userToCheck)
+                .expirationDate(Instant.now().plus(1, ChronoUnit.DAYS))
                 .build();
+        sessionService.addSession(currentSession);
         Cookie cookie = new Cookie("session", String.valueOf(currentSession.getId()));
         cookie.setMaxAge(24 * 60 * 60);
         response.addCookie(cookie);

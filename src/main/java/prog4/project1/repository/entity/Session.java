@@ -11,6 +11,7 @@ import java.time.Instant;
 @Entity
 @Builder
 @ToString
+@Table(name = "user_session")
 public class Session {
 
     @Id
@@ -22,6 +23,6 @@ public class Session {
     private User user;
 
 
-    private Instant expirationDateTime;
+    private Instant expirationDate;
 
 }

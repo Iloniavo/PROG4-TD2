@@ -45,6 +45,8 @@ public class EmployeesController extends AuthController{
             @RequestParam(required = false, defaultValue = "") String sexQuery,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate hireDateFrom,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate hireDateTo,
+            @RequestParam(required = false, defaultValue = "hireDate") String orderBy,
+            @RequestParam(required = false, defaultValue = "ASC") String sortDirection,
             HttpSession session,
             Model model
     ) {
@@ -53,6 +55,8 @@ public class EmployeesController extends AuthController{
         session.setAttribute("lastName", lastNameQuery);
         session.setAttribute("function", functionQuery);
         session.setAttribute("sex", sexQuery);
+        session.setAttribute("sortDirection", sortDirection);
+        session.setAttribute("orderBy", orderBy);
         if(hireDateFrom != null) {
             session.setAttribute("hireDateFrom", hireDateFrom.toString());
         }
@@ -65,7 +69,10 @@ public class EmployeesController extends AuthController{
         if (hireDateTo == null) {
             hireDateTo = LocalDate.now();
         }
-        List<Employee> filteredEmployees = employeeService.getEmployeesByJPAFilter(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireDateFrom, hireDateTo);
+
+        log.info((String) session.getAttribute("sexQuery") + " Sex");
+
+        List<Employee> filteredEmployees = employeeService.getEmployeesByJPAFilter(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireDateFrom, hireDateTo, orderBy, sortDirection);
         //List<Employee> filteredEmployees = employeeRepository.findAllByHireDateBetween(hireDateFrom, hireDateTo);
         model.addAttribute("employees", filteredEmployees);
         return "employees/list";
@@ -77,25 +84,21 @@ public class EmployeesController extends AuthController{
             HttpSession session,
             Model model
     ) throws IOException {
-        LocalDate hireFrom = null;
-        LocalDate hireTo = null;
         String firstNameQuery = (String) session.getAttribute("firstName");
         String lastNameQuery = (String) session.getAttribute("lastName");
         String functionQuery = (String) session.getAttribute("function");
         String sexQuery = (String) session.getAttribute("sex");
+        String sortDirection = (String) session.getAttribute("sortDirection");
+        String orderBy = (String) session.getAttribute("orderBy");
         String hireDateFrom = (String) session.getAttribute("hireDateFrom");
         String hireDateTo = (String) session.getAttribute("hireDateTo");
-        
-        if(hireDateFrom != null) {
-            hireFrom = LocalDate.parse(hireDateFrom);
-        }
 
-        if(hireDateTo != null) {
-            hireTo = LocalDate.parse(hireDateTo);
-        }
-        
-        List<Employee> employees = employeeService.getFilteredEmployees(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireFrom, hireTo);
+        LocalDate hireFrom = hireDateFrom != null ? LocalDate.parse(hireDateFrom) : LocalDate.parse("2000-01-01");
+        LocalDate hireTo = hireDateTo != null ? LocalDate.parse(hireDateTo) : LocalDate.now();
+
+        List<Employee> employees = employeeService.getEmployeesByJPAFilter(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireFrom, hireTo, orderBy, sortDirection);
         model.addAttribute("employees", employees);
+        log.info(String.valueOf(employees.size()));
         response.setContentType("text/csv");
         response.addHeader("Content-Disposition", "attachment; filename=\"employees.csv\"");
         csvFileGenerator.writeStudentsToCsv(employees, response.getWriter());

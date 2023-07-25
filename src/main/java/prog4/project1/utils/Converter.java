@@ -38,5 +38,9 @@ public class Converter {
         return elementsList;
     }
 
+    public static String concatenatePhoneNumbers(List<String> phoneNumbers){
+        return String.join(", ", phoneNumbers);
+    }
+
 
 }

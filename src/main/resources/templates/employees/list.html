@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="css/tw.css" rel = "stylesheet"/>
-    <title>Spring Boot Application</title>
+    <title>Employees</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/878e958776.js" crossorigin="anonymous"></script>
     <script>
@@ -20,34 +20,68 @@
         }
     </script>
 </head>
-<body>
-<header th:insert="components/components.html :: navbar"> </header>
-<form th:action="@{/employees}" method="get" class="space-x-4 w-screen">
-    <label>
-        <input type="text" name="firstNameQuery" th:value="${firstNameQuery}"  placeholder="First name" size="50" >
-    </label>
-    <label>
-        <input type="text" name="lastNameQuery" th:value="${lastNameQuery}"  placeholder="Last name" size="50" >
-    </label>
-    <label>
-        <input type="text" name="sexQuery" th:value="${sexQuery}"  placeholder="Sex" size="50" >
-    </label>
-    <label>
-        <input type="text" name="functionQuery" th:value="${functionQuery}"  placeholder="Function" size="50" >
-    </label>
-    <label>
-        <input type="date" name="hireDateFrom" th:value="${hireDateFrom}"  placeholder="Hire date from ..." size="50" >
-    </label>
-    <label>
-        <input type="date" name="hireDateTo" th:value="${hireDateTo}"   placeholder="Hire Date to" size="50" >
-    </label>
-    <button type="submit" class="btn btn-info" >Search</button>
-    <button class="btn btn-info" ><a href="/employees">All employees</a></button>
+<body class="bg-white" >
+<header th:insert="components/components :: navbar"> </header>
+<form th:action="@{/employees}" method="get" class="space-x-4 w-screen flex justify-center">
+    <div class="grid gap-6 mb-6 md:grid-cols-5 w-3/4">
+        <div>
+            <label for="firstName" >First name :</label>
+            <input type="text" id="firstName" name="firstNameQuery" th:value="${firstNameQuery}"  placeholder="First name" size="50" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+        </div>
+        <div>
+            <label for="lastName">Last name: </label>
+                <input type="text" id="lastName"  name="lastNameQuery" th:value="${lastNameQuery}"  placeholder="Last name" size="50" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+
+        </div>
+        <div>
+            <label for="sexQuery">Sex: </label>
+            <select id="sexQuery" name="sexQuery" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+                <option></option>
+                <option th:value="MALE">MALE</option>
+                <option th:value="FEMALE">FEMALE</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="function">Function :</label>
+
+            <input type="text" id="function" name="functionQuery" th:value="${functionQuery}"  placeholder="Function" size="50" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+        </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 rounded-md hover:bg-blue-600 h-10 mt-6">Search</button>
+
+
+        <div>
+            <label for="hireDateFrom">From :</label>
+                <input type="date" id="hireDateFrom" name="hireDateFrom" th:value="${hireDateFrom}"  placeholder="Hire date from ..." size="50" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+        </div>
+        <div>
+            <label for="hireDateTo" >To :</label>
+                <input type="date" id="hireDateTo" name="hireDateTo" th:value="${hireDateTo}"   placeholder="Hire Date to" size="50" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+        </div>
+        <div>
+            <label for="sortDirection" >Direction :</label>
+            <select id="sortDirection" name="sortDirection" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+                <option></option>
+                <option th:value="ASC">ASC</option>
+                <option th:value="DESC">DESC</option>
+            </select>
+        </div>
+        <div>
+            <label for="orderBy" >Order by :</label>
+            <select id="orderBy" name="orderBy" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
+                <option></option>
+                <option th:value="firstName">First Name</option>
+                <option th:value="lastName">Last Name</option>
+                <option th:value="hireDate">Hire date</option>
+                <option th:value="function">Function</option>
+            </select>
+        </div>
+    </div>
 </form>
     <div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div class="relative overflow-x-auto shadow-md w-11/12 mx-auto rounded-b-sm">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                 <tr>
                     <th scope="col" class="px-4 py-2">First name</th>
                     <th scope="col" class="px-4 py-2">Last name</th>
@@ -59,22 +93,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Utilisez Thymeleaf pour itérer sur la liste des employés et afficher les données -->
-                <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700" th:each="employee : ${employees}">
-                    <td class=" px-4 py-2" th:text="${employee.firstName}"></td>
+                <tr class="bg-white border-b" th:each="employee : ${employees}">
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" th:text="${employee.firstName}"></td>
                     <td class=" px-4 py-2" th:text="${employee.lastName}"></td>
                     <td class=" px-4 py-2" th:text="${employee.serialNumber}"></td>
-                    <td class=" px-4 py-2" th:text="${employee.sex}"></td>
+                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap" th:text="${employee.sex}"></td>
                     <td class=" px-4 py-2" th:text="${employee.function}"></td>
                     <td class=" px-4 py-2" th:text="${employee.hireDate}"></td>
-                    <td class=" px-4 py-2" ><a th:href="@{/employees/{id}/card(id=${employee.id})}">Détails</a></td>
+                    <td class=" px-4 py-2" ><a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" th:href="@{/employees/{id}/card(id=${employee.id})}">Details</a></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 absolute bottom-10 right-10"><a href="/employees/create"> Add employees <i class="fa-solid fa-arrow-right"></i></a></button>
-<button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 absolute bottom-10 left-10"><a href="/export-to-csv"> Download csv <i class="fa-solid fa-arrow-right"></i></a></button>
-
+<button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 absolute bottom-10 right-10"><a href="/export-to-csv"> Download csv <i class="fa-solid fa-arrow-right"></i></a></button>
+<footer th:insert="components/components :: footer" ></footer>
 </body>
 </html>

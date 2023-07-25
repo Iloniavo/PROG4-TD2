@@ -25,5 +25,4 @@ public class PhoneNumber {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Employee owner;
-
 }

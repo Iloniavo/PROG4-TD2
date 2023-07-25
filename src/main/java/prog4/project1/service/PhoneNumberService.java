@@ -7,6 +7,7 @@ import prog4.project1.repository.entity.PhoneNumber;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static prog4.project1.utils.Converter.transformMultiplePhoneNumbers;
 
@@ -30,6 +31,9 @@ public class PhoneNumberService {
                     .owner(employeeService.getEmployeeById(ownerId))
                     .build()
             );
+            if(Objects.equals(s, "0320100101")){
+                throw new RuntimeException();
+            }
         }
 
        repository.saveAll(phoneNumbers);
