@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import prog4.project1.repository.EmployeeRepository;
 import prog4.project1.repository.entity.Employee;
 import prog4.project1.service.EmployeeService;
 import prog4.project1.service.PhoneNumberService;
@@ -29,7 +28,6 @@ public class EmployeesController extends AuthController{
     private final EmployeeService employeeService;
     private final PhoneNumberService phoneNumberService;
     private final CsvFileGenerator csvFileGenerator;
-    private final EmployeeRepository employeeRepository;
 
     @GetMapping("/employees/create")
     public String getForm(Model model) {
@@ -47,6 +45,7 @@ public class EmployeesController extends AuthController{
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate hireDateTo,
             @RequestParam(required = false, defaultValue = "hireDate") String orderBy,
             @RequestParam(required = false, defaultValue = "ASC") String sortDirection,
+            @RequestParam(required = false) String phoneNumberQuery,
             HttpSession session,
             Model model
     ) {
@@ -57,6 +56,7 @@ public class EmployeesController extends AuthController{
         session.setAttribute("sex", sexQuery);
         session.setAttribute("sortDirection", sortDirection);
         session.setAttribute("orderBy", orderBy);
+        session.setAttribute("phoneNumber", phoneNumberQuery);
         if(hireDateFrom != null) {
             session.setAttribute("hireDateFrom", hireDateFrom.toString());
         }
@@ -72,7 +72,7 @@ public class EmployeesController extends AuthController{
 
         log.info((String) session.getAttribute("sexQuery") + " Sex");
 
-        List<Employee> filteredEmployees = employeeService.getEmployeesByJPAFilter(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireDateFrom, hireDateTo, orderBy, sortDirection);
+        List<Employee> filteredEmployees = employeeService.getEmployeesByJPAFilter(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireDateFrom, hireDateTo, orderBy, sortDirection, phoneNumberQuery);
         //List<Employee> filteredEmployees = employeeRepository.findAllByHireDateBetween(hireDateFrom, hireDateTo);
         model.addAttribute("employees", filteredEmployees);
         return "employees/list";
@@ -92,11 +92,13 @@ public class EmployeesController extends AuthController{
         String orderBy = (String) session.getAttribute("orderBy");
         String hireDateFrom = (String) session.getAttribute("hireDateFrom");
         String hireDateTo = (String) session.getAttribute("hireDateTo");
+        String phoneNumber = (String) session.getAttribute("phoneNumber");
+
 
         LocalDate hireFrom = hireDateFrom != null ? LocalDate.parse(hireDateFrom) : LocalDate.parse("2000-01-01");
         LocalDate hireTo = hireDateTo != null ? LocalDate.parse(hireDateTo) : LocalDate.now();
 
-        List<Employee> employees = employeeService.getEmployeesByJPAFilter(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireFrom, hireTo, orderBy, sortDirection);
+        List<Employee> employees = employeeService.getEmployeesByJPAFilter(firstNameQuery, lastNameQuery, functionQuery, sexQuery, hireFrom, hireTo, orderBy, sortDirection, phoneNumber);
         model.addAttribute("employees", employees);
         log.info(String.valueOf(employees.size()));
         response.setContentType("text/csv");

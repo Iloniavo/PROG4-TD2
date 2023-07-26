@@ -48,29 +48,13 @@
     </div>
   </div>
 </nav>
-<footer class="bg-gray-800 text-white py-6" th:fragment="footer">
+<footer class="bg-gray-800 text-white py-6 absolute bottom-0 w-full" style="z-index: -1" th:fragment="footer">
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Logo et description -->
       <div>
         <h2 class="text-xl font-bold" th:text="${society.name}"></h2>
-        <p>{{ description }}</p>
-      </div>
-
-      <!-- Adresse et coordonnées -->
-      <div>
-        <h3 class="text-lg font-bold mb-4">Contact</h3>
-        <p>{{ location }}</p>
-        <p>Email: {{ email }}</p>
-        <p>Téléphone: {{ phoneNumbers.join(", ") }}</p>
-      </div>
-
-      <!-- Informations juridiques -->
-      <div>
-        <h3 class="text-lg font-bold mb-4">Informations juridiques</h3>
-        <p>NIF: {{ NIF }}</p>
-        <p>STAT: {{ STAT }}</p>
-        <p>RCS: {{ RCS }}</p>
+        <p th:text="${society.description}" ></p>
       </div>
     </div>
   </div>
